@@ -1,35 +1,43 @@
 <!DOCTYPE html>
 <html lang="pl">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="Cena złota z Narodowego Banku Polskiego">
+        <meta name="keywords" content="Narodowy Bank Polski, NBP">
+        <meta name="author" content="Robert Wilk">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>NBP</title>
+        <style>
+             tr td {
+                border: 1px solid black;
+                border-collapse: initial;
+                padding: 3px;
+            }
+        </style>
+    </head>
+    <body>
 
-    <link rel="stylesheet" href="styles.css">
+        <table style="border:1px sold black" id="złoto">
+            <tr>
+                <td>Cena złota</td> 
+                <td>Data</td>
+            </tr>       
+        </table>
 
-    <title>PRIME</title>
-     <script type="text/javascript" src="script.js"></script>
-</head>
-<body>
-    <header>
-        <h1>Czy to liczba pierwsza?</h1>
-    </header>
-    <main>
-        <div>
-            <label for="prime">Podaj wartość:</label><br>
-            <input type="number" id="prime" name="prime" min="1">
-        </div>
-        <div>
-            <button onclick="Prime()">sprawdź</button>
-        </div>
-            <div>
-                <strong>Wynik</strong>: <span id="result"></span>
-            </div>
-    </main>
-    <footer>
-        <p>&copy; 2023 | Robert Wilk</p>
-    </footer>
-    
-</body>
+        <script type="text/javascript">
+            fetch('http://api.nbp.pl/api/cenyzlota/last/5?format=json')
+                .then(response => response.json())
+                .then(response => {
+                     console.log(response); 
 
+                     for (let i = 0; i < response.length; i++){
+                        let pricegold = response[i]
+                        document.getElementById("złoto").innerHTML += "<tr><td>" + pricegold.cena
+                            +"</td><td>" + pricegold.data + "</td></tr>"
+                    }
+                })
+                .catch(err => console.error(err)); 
+        </script>
+    </body>
 </html>
